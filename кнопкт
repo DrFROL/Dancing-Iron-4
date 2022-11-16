@@ -1,0 +1,276 @@
+local Tower_build = false
+local timer_tower = 0
+local towers = {}
+
+local dots = {} 
+local dot_build = false
+local timer_dot = 0
+
+local miners = {} 
+local miner_build = false
+local timer_miner = 0
+
+local rock_axers = {} 
+local rock_axer_build = false
+local timer_rock_axer = 0
+
+local trees = {} 
+local tree_build = false
+local timer_tree = 0
+--------------------------
+function Class_Tower()
+    local tower = {
+        x = ms_x,
+        y = ms_y
+    }
+    return tower
+end
+
+function Tower_checker()
+    if Tower_check then
+        if timer_tower < 10 then
+            timer_tower = timer_tower + 1
+        else
+            timer_tower = 0 
+        end
+        if love.mouse.isDown(1) and timer_tower == 10 then
+            ms_x, ms_y = love.mouse.getPosition()
+            if (750 < ms_x and ms_x < 780) and (30 < ms_y and ms_y < 60) then
+                Tower_check = false
+                timer_tower = 0
+            else
+                table.insert(towers, Class_Tower())
+                Tower_check = false
+                timer_tower = 0
+            end 
+        end
+    end
+end
+
+function Tower_Builder()
+    if love.mouse.isDown(1) then
+        local mouse_x, mouse_y = love.mouse.getPosition()
+        if (750 < mouse_x and mouse_x < 780) and (30 < mouse_y and mouse_y < 60) then
+            Tower_check = true
+        end
+    end
+
+    Tower_checker()
+end
+
+function TowerDraw(self)
+    love.graphics.rectangle('fill', self.x, self.y, 30, 70)
+end
+--------------------------
+function Class_Dot()
+    local dot = {
+        x = ms_x,
+        y = ms_y
+    }
+    return dot
+end
+
+function Dot_checker()
+    if dot_check then
+        if timer_dot < 10 then
+            timer_dot = timer_dot + 1
+        else
+            timer_dot = 0 
+        end
+        if love.mouse.isDown(1) and timer_dot == 10 then
+            ms_x, ms_y = love.mouse.getPosition()
+            if (725 < ms_x and ms_x < 755) and (30 < ms_y and ms_y < 60) then
+                dot_check = false
+                timer_dot = 0
+            else
+                table.insert(dots, Class_Dot())
+                dot_check = false
+                timer_dot = 0
+            end 
+        end
+    end
+end
+
+function Dot_Builder()
+    if love.mouse.isDown(1) then
+        local mouse_x, mouse_y = love.mouse.getPosition()
+        if (725 < mouse_x and mouse_x < 755) and (30 < mouse_y and mouse_y < 60) then
+            dot_check = true
+        end
+    end
+
+    Dot_checker()
+end
+
+function DotDraw(self)
+    love.graphics.rectangle('fill', self.x, self.y, 50, 50)
+end
+--------------------------
+function Class_Miner()
+    local miner = {
+        x = ms_x,
+        y = ms_y
+    }
+    return miner
+end
+
+function Miner_checker()
+    if Miner_check then
+        if timer_miner < 10 then
+            timer_miner = timer_miner + 1
+        else
+            timer_miner = 0 
+        end
+        if love.mouse.isDown(1) and timer_miner == 10 then
+            ms_x, ms_y = love.mouse.getPosition()
+            if (700 < ms_x and ms_x < 730) and (30 < ms_y and ms_y < 60) then
+                Miner_check = false
+                Miner_tower = 0
+            else
+                table.insert(miners, Class_Miner())
+                Miner_check = false
+                timer_miner = 0
+            end 
+        end
+    end
+end
+
+function Miner_Builder()
+    if love.mouse.isDown(1) then
+        local mouse_x, mouse_y = love.mouse.getPosition()
+        if (700 < mouse_x and mouse_x < 730) and (30 < mouse_y and mouse_y < 60) then
+            Miner_check = true
+        end
+    end
+
+    Miner_checker()
+end
+
+function MinerDraw(self)
+    love.graphics.circle('fill', self.x, self.y, 70)
+end
+--------------------------
+function Class_Rock_Axer()
+    local rock_axer = {
+        x = ms_x,
+        y = ms_y
+    }
+    return rock_axer
+end
+
+function Rock_Axer_checker()
+    if rock_axer_check then
+        if timer_rock_axer < 10 then
+            timer_rock_axer = timer_rock_axer + 1
+        else
+            timer_rock_axer = 0 
+        end
+        if love.mouse.isDown(1) and timer_rock_axer == 10 then
+            ms_x, ms_y = love.mouse.getPosition()
+            if (675 < ms_x and ms_x < 705) and (30 < ms_y and ms_y < 60) then
+                rock_axer_check = false
+                timer_rock_axer = 0
+            else
+                table.insert(rock_axers, Class_Rock_Axer())
+                rock_axer_check = false
+                timer_rock_axer = 0
+            end 
+        end
+    end
+end
+
+function Rock_Axer_Builder()
+    if love.mouse.isDown(1) then
+        local mouse_x, mouse_y = love.mouse.getPosition()
+        if (675 < mouse_x and mouse_x < 705) and (30 < mouse_y and mouse_y < 60) then
+            rock_axer_check = true
+        end
+    end
+
+    Rock_Axer_checker()
+end
+
+function RockAxerDraw(self)
+    love.graphics.rectangle('fill', self.x, self.y, 10, 20)
+end
+--------------------------
+function Class_Tree()
+    local tree = {
+        x = ms_x,
+        y = ms_y
+    }
+    return tree
+end
+
+function Tree_checker()
+    if tree_check then
+        if timer_tree < 10 then
+            timer_tree = timer_tree + 1
+        else
+            timer_tree = 0 
+        end
+        if love.mouse.isDown(1) and timer_tree == 10 then
+            ms_x, ms_y = love.mouse.getPosition()
+            if (650 < ms_x and ms_x < 680) and (30 < ms_y and ms_y < 60) then
+                tree_check = false
+                timer_tree = 0
+            else
+                table.insert(trees, Class_Tree())
+                tree_check = false
+                timer_tree = 0
+            end 
+        end
+    end
+end
+
+function Tree_Builder()
+    if love.mouse.isDown(1) then
+        local mouse_x, mouse_y = love.mouse.getPosition()
+        if (650 < mouse_x and mouse_x < 680) and (30 < mouse_y and mouse_y < 60) then
+            tree_check = true
+        end
+    end
+
+    Tree_checker()
+end
+
+function TreeDraw(self)
+    love.graphics.rectangle('fill', self.x, self.y, 100, 100)
+end
+--------------------------
+function love.update(dt)
+    Tower_Builder()
+    Dot_Builder()
+    Miner_Builder()
+    Rock_Axer_Builder()
+    Tree_Builder()
+end
+
+function love.draw()
+    love.graphics.rectangle('fill', 380, 280, 64, 64)
+    love.graphics.rectangle('fill', 750, 30, 16,16)
+    love.graphics.rectangle('fill', 725, 30, 16,16)
+    love.graphics.rectangle('fill', 700, 30, 16,16)
+    love.graphics.rectangle('fill', 675, 30, 16,16)
+    love.graphics.rectangle('fill', 650, 30, 16,16)
+    for _, a in ipairs(towers) do
+        TowerDraw(a)
+    end
+
+    for _, b in ipairs(dots) do
+        DotDraw(b)
+    end
+
+    for _, c in ipairs(miners) do
+        MinerDraw(c)
+    end
+
+    for _, d in ipairs(rock_axers) do
+        RockAxerDraw(d)
+    end
+
+    for _, e in ipairs(trees) do
+        TreeDraw(e)
+    end
+
+end

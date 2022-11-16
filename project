@@ -1,0 +1,162 @@
+local anim = require('anim')
+local scale = 6
+
+love.graphics.setDefaultFilter('nearest','nearest')
+local titles = love.graphics.newImage('titles.png')
+
+local playerAnimation = {}
+local player = {
+    x = 300,
+    y = 300,
+    speed = 100,
+}
+
+local fireball = {
+    x = 0,
+    y = 0,
+    draw = false,
+    speed = 42
+}
+function NewPlayerIdleAnimation()
+    local animation = {
+        timer = 0,
+        speed = 0.2,
+        frameIdx = 1,
+        frames = {}
+    }
+    for i = 0, 3 do
+        local quad1 = love.graphics.newQuad(
+        128 + i * 16,
+        100,
+        16,
+        28,
+        titles:getWidth(),
+        titles:getHeight()
+        )
+        table.insert(animation.frames, quad1)
+    end
+    return animation
+end
+
+function NewPlayerRunAnimation()
+    local animation = {
+        timer = 0,
+        speed = 0.2,
+        frameIdx = 1,
+        frames = {}
+    }
+    for i = 4, 7 do
+        local quad1 = love.graphics.newQuad(
+        128 + i * 16,
+        100,
+        16,
+        28,
+        titles:getWidth(),
+        titles:getHeight()
+        )
+        table.insert(animation.frames, quad1)
+    end
+    return animation
+end
+
+function love.load()
+    playerAnimation.idle = NewPlayerIdleAnimation()
+    playerAnimation.run = NewPlayerRunAnimation()
+    playerAnimation.current = playerAnimation.idle
+end
+
+
+function Length(vec)
+    local v = vec.x * vec.x + vec.y * vec.y
+    return math.sqrt(v)
+end
+
+function Normalize(vec)
+    local l = Length(vec)
+    if l == 0 then
+        return vec
+    end
+    return {
+        x = vec.x / l,
+        y = vec.y / l,
+    }
+end
+
+function Scale(vec, s)
+    return {
+        x = vec.x * s,
+        y = vec.y * s
+    }
+end
+
+function HandleKeyboard(dt)
+    local dir = { x = 0, y = 0 }
+    if love.keyboard.isDown('w') then
+        dir.y = -1
+        playerAnimation.current = playerAnimation.run
+    else
+        playerAnimation.current = playerAnimation.idle
+    end
+    if love.keyboard.isDown('s') then
+        dir.y = 1
+        playerAnimation.current = playerAnimation.run
+    else
+        playerAnimation.current = playerAnimation.idle
+    end
+    if love.keyboard.isDown('a') then
+        dir.x = -1
+        playerAnimation.current = playerAnimation.run
+    else
+        playerAnimation.current = playerAnimation.idle
+    end
+    if love.keyboard.isDown('d') then
+        dir.x = 1
+        playerAnimation.current = playerAnimation.run
+    else
+        playerAnimation.current = playerAnimation.idle
+    end
+
+    if love.keyboard.isDown('left') then
+        fireball.draw = true
+    end
+
+    anim.update(playerAnimation.current, dt)
+    return Normalize(dir)
+end
+
+function MouseDirection()
+    local mx, my = love.mouse.getPosition()
+    local dir = {
+        x =mx - player.x,
+        y=my - player.y
+    }
+end
+
+function love.update(dt)
+    local dir = HandleKeyboard(dt)
+    local vel = Scale(dir, player.speed)
+    player.x = player.x + vel.x * dt
+    player.y = player.y + vel.y * dt
+    
+    
+    if player.x < -50 then
+        player.x= 850
+    end
+    if player.x> 850 then
+        player.x = -50
+    end
+    if player.y< -50 then
+        player.y= 650
+    end 
+    if player.y>650 then
+        player.y=-50
+    end
+end
+
+function love.draw()
+    local frame = anim.getFrame(playerAnimation.idle)
+    love.graphics.draw(titles, frame, player.x, player.y, 0, 3,3)
+    if fireball.draw then
+        love.graphics.circle('fill',fireball.x,fireball.y , 20)
+    end
+end

@@ -1,0 +1,50 @@
+local aims = {}
+local timer = 0
+local cooldawn = 1
+local WIDTH = 0
+local HEIGHT = 0
+local IsMouseClicked = false
+local WasReleased = true
+function love.load()
+    HEIGHT = love.graphics.getHeight()
+    WIDTH = love.graphics.getWidth()
+end
+
+function Aim()
+    local w = 50
+    local aim = {
+        x = love.math.random(0, WIDTH-w),
+        y = 0,
+        width = w,
+        height = 50,
+        speed = 42,
+        shouldDestroy = false
+    }
+    return aim
+end
+
+function MouseHandle()
+    IsMouseClicked = false
+    if love.mouse.isDown(1) then
+        if WasReleased then 
+            IsMouseClicked = true
+            WasReleased = false
+            return
+        end
+    else
+        WasReleased = true
+    end
+end
+
+function Colliders(rect, point)
+    local lx = rect.x
+    local rx = rect.x + rect.width
+    local ty = rect.y
+    local by = rect.y + rect.height
+
+    return point.x >= lx and
+        point.x <= rx and
+        point.y >= ty and
+        point.y <= by
+
+end

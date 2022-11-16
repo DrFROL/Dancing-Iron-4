@@ -1,0 +1,54 @@
+local scale = 6
+love.graphics.setDefaultFilter('nearest','nearest')
+local titles = love.graphics.newImage('titles.png')
+
+local playerAnimation = {}
+
+function NewPlayerIdleAnimation()
+    local animation = {
+        timer = 0,
+        speed = 0.2,
+        frameIdx = 1,
+        frames = {}
+    }
+    for i = 0, 3 do
+        local quad1 = love.graphics.newQuad(
+        128 + i * 16,
+        100,
+        16,
+        28,
+        titles:getWidth(),
+        titles:getHeight()
+        )
+        table.insert(animation.frames, quad1)
+    end
+    return animation
+end
+
+function love.load()
+    playerAnimation.idle = NewPlayerIdleAnimation()
+end
+
+function AnimationUpdate(self, dt)
+    local n = #self.frames
+    self.timer = self.timer + dt
+    if self.timer >= self.speed then
+        self.timer = self.timer - self.speed
+        self.frameIdx = self.frameIdx % n + 1
+    end
+end
+
+
+
+function love.update(dt)
+
+    AnimationUpdate(playerAnimation.idle,dt)
+end
+
+function AnimationFrame(self)
+    return self.frames[self.frameIdx]
+end
+function love.draw()
+    local frame = AnimationFrame(playerAnimation.idle)
+    love.graphics.draw(titles, frame, 300, 300, 0, 3,3)
+end
